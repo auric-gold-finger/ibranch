@@ -70,8 +70,8 @@ def generate_table_html(df):
                 line-height: 1.5;
                 vertical-align: top;
                 box-shadow: 
-                    2px 2px 4px rgba(0, 0, 0, 0.07),
-                    3px 3px 6px rgba(0, 0, 0, 0.03);
+                    2px 2px 4px rgba(0, 0, 0, 0.12),
+                    3px 3px 6px rgba(0, 0, 0, 0.06);
                 position: relative;
                 transform: translate(-1px, -1px);  /* Slight lift */
                 transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -80,8 +80,8 @@ def generate_table_html(df):
             tr:hover td {{
                 transform: translate(-2px, -2px);
                 box-shadow: 
-                    3px 3px 6px rgba(0, 0, 0, 0.2),
-                    5px 5px 12px rgba(0, 0, 0, 0.15);
+                    3px 3px 6px rgba(0, 0, 0, 0.15),
+                    5px 5px 12px rgba(0, 0, 0, 0.1);
             }}
             
             td:first-child {{
