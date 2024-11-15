@@ -167,6 +167,61 @@ def get_svg_download(table_html):
 </svg>'''
     return svg_wrapper
 
+def add_png_download_button():
+    js_code = """
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        .png-download-btn {
+            background: #000000;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-family: 'Avenir', system-ui, sans-serif;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+        .png-download-btn:hover {
+            opacity: 0.9;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.25);
+            transform: translateY(-1px);
+        }
+    </style>
+    
+    <button class="png-download-btn" onclick="downloadTableAsPNG()">Download PNG</button>
+    
+    <script>
+    function downloadTableAsPNG() {
+        const table = document.querySelector('.table-container');
+        
+        // Add loading state to button
+        const button = document.querySelector('.png-download-btn');
+        const originalText = button.innerHTML;
+        button.innerHTML = 'Generating PNG...';
+        button.style.opacity = '0.7';
+        
+        html2canvas(table, {
+            scale: 2,  // Higher resolution
+            backgroundColor: '#f0f2f5',
+            logging: false,
+            useCORS: true
+        }).then(canvas => {
+            // Reset button
+            button.innerHTML = originalText;
+            button.style.opacity = '1';
+            
+            // Download the image
+            const link = document.createElement('a');
+            link.download = 'clinical_trials_table.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+    }
+    </script>
+    """
+    return components.html(js_code, height=50)
+
 def main():
     st.title("Clinical Trials Table Visualizer")
     st.markdown("""
@@ -249,11 +304,13 @@ def main():
 
     #st.dataframe(df, use_container_width=True, hide_index=True)
     
+    # Display table
     table_html = generate_table_html(df)
     components.html(table_html, height=600, scrolling=True)
     
-    # Then in your main() function, add:
-    col1, col2, col3 = st.columns(3)
+    # Download options
+    st.markdown("### Download Options")
+    col1, col2, col3 = st.columns([1,1,1])
     with col1:
         st.download_button(
             label="Download HTML",
@@ -269,13 +326,7 @@ def main():
             mime="text/csv"
         )
     with col3:
-        svg_content = get_svg_download(table_html)
-        st.download_button(
-            label="Download SVG",
-            data=svg_content,
-            file_name="table.svg",
-            mime="image/svg+xml"
-        )
+        add_png_download_button()
 
 
 if __name__ == "__main__":
