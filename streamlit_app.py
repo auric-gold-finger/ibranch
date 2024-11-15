@@ -156,7 +156,7 @@ def main():
             }
             .stDownloadButton {
                 background: #000000 !important;
-                color: white !important;
+                color: black !important;
                 border: none !important;
                 padding: 0.5rem 1rem !important;
                 font-weight: 500 !important;
