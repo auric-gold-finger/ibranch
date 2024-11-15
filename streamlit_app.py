@@ -27,12 +27,11 @@ def generate_table_html(df):
             table {{
                 width: 100%;
                 border-collapse: separate;
-                border-spacing: 3px;
+                border-spacing: 4px;  /* Slightly increased for shadow */
                 font-family: 'Avenir', system-ui, sans-serif;
                 background: #f0f2f5;
             }}
             
-            /* Remove all default table borders */
             table, th, td {{
                 border: none !important;
             }}
@@ -52,10 +51,11 @@ def generate_table_html(df):
                 font-size: 0.85rem;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+                box-shadow: 
+                    2px 2px 4px rgba(0, 0, 0, 0.2),
+                    4px 4px 8px rgba(0, 0, 0, 0.1);
             }}
             
-            /* Column widths */
             th:nth-child(1) {{ width: 8%; }}
             th:nth-child(2) {{ width: 22%; }}
             th:nth-child(3) {{ width: 20%; }}
@@ -70,19 +70,20 @@ def generate_table_html(df):
                 line-height: 1.5;
                 vertical-align: top;
                 box-shadow: 
-                    0 2px 3px rgba(0, 0, 0, 0.03),
-                    0 1px 2px rgba(0, 0, 0, 0.03);
-                transition: all 0.2s ease;
+                    2px 2px 4px rgba(0, 0, 0, 0.07),
+                    3px 3px 6px rgba(0, 0, 0, 0.03);
+                position: relative;
+                transform: translate(-1px, -1px);  /* Slight lift */
+                transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             }}
             
             tr:hover td {{
-                transform: translateY(-1px);
+                transform: translate(-2px, -2px);
                 box-shadow: 
-                    0 3px 6px rgba(0, 0, 0, 0.06),
-                    0 2px 4px rgba(0, 0, 0, 0.04);
+                    3px 3px 6px rgba(0, 0, 0, 0.1),
+                    5px 5px 12px rgba(0, 0, 0, 0.05);
             }}
             
-            /* Phase column */
             td:first-child {{
                 font-weight: 600;
                 color: #1e3a8a;
@@ -90,7 +91,6 @@ def generate_table_html(df):
                 text-align: center;
             }}
             
-            /* Bullet points */
             .bullet {{
                 display: inline-block;
                 color: #1e3a8a;
@@ -101,7 +101,6 @@ def generate_table_html(df):
                 text-align: center;
             }}
             
-            /* Clean list styling */
             td ul {{
                 margin: 0;
                 padding: 0;
@@ -114,7 +113,6 @@ def generate_table_html(df):
                 position: relative;
             }}
             
-            /* Override any default table borders from DataFrame */
             .dataframe {{
                 border: none !important;
             }}
@@ -124,7 +122,6 @@ def generate_table_html(df):
                 border: none !important;
             }}
             
-            /* Minimal scrollbar */
             ::-webkit-scrollbar {{
                 width: 8px;
                 height: 8px;
