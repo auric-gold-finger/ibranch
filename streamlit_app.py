@@ -147,6 +147,19 @@ def generate_table_html(df):
     """
     return html
 
+def get_svg_download(html_content):
+    # Create SVG wrapper around the HTML content
+    svg_content = f"""<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="800">
+        <foreignObject width="1200" height="800">
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                {html_content}
+            </div>
+        </foreignObject>
+    </svg>
+    """
+    return svg_content
+
 def main():
     st.title("Clinical Trials Table Visualizer")
     st.markdown("""
@@ -232,7 +245,8 @@ def main():
     table_html = generate_table_html(df)
     components.html(table_html, height=600, scrolling=True)
     
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)  # Changed from 2 to 3 columns
+    
     with col1:
         st.download_button(
             label="Download HTML",
@@ -247,6 +261,16 @@ def main():
             file_name="table.csv",
             mime="text/csv"
         )
+
+    with col3:
+        svg_content = get_svg_download(table_html)
+        st.download_button(
+            label="Download SVG",
+            data=svg_content,
+            file_name="table.svg",
+            mime="image/svg+xml"
+        )
+
 
 if __name__ == "__main__":
     main()
