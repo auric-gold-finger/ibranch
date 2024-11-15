@@ -80,8 +80,8 @@ def generate_table_html(df):
             tr:hover td {{
                 transform: translate(-2px, -2px);
                 box-shadow: 
-                    3px 3px 6px rgba(0, 0, 0, 0.1),
-                    5px 5px 12px rgba(0, 0, 0, 0.05);
+                    3px 3px 6px rgba(0, 0, 0, 0.2),
+                    5px 5px 12px rgba(0, 0, 0, 0.15);
             }}
             
             td:first-child {{
