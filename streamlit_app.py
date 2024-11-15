@@ -8,7 +8,7 @@ st.set_page_config(layout="wide", page_title="Clinical Trials Visualizer")
 def generate_table_html(df):
     df = df.copy()
     df['Objective'] = df['Objective'].apply(lambda x: 
-        '<br>'.join([f"<span style='color: #4b5563'>▪</span> {item.strip()}" for item in x.split(';')])
+        '<br>'.join([f"<span class='bullet'>•</span> {item.strip()}" for item in x.split(';')])
     )
     
     html = f"""
@@ -18,70 +18,69 @@ def generate_table_html(df):
             
             .table-container {{
                 background: white;
-                border-radius: 16px;
-                padding: 2rem;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
-                overflow: hidden;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 2px rgba(0, 0, 0, 0.05);
                 max-width: 1400px;
                 margin: 0 auto;
             }}
             table {{
                 width: 100%;
-                border-collapse: separate;
-                border-spacing: 0;
+                border-collapse: collapse;
                 font-family: 'Avenir', system-ui, sans-serif;
+                background: white;
             }}
             th {{
                 background: #1e3a8a;
                 color: white;
-                padding: 18px 24px;
+                padding: 14px 20px;
                 text-align: left;
                 font-weight: 500;
-                font-size: 0.9rem;
+                font-size: 0.85rem;
                 text-transform: uppercase;
-                letter-spacing: 0.03em;
-                border-bottom: none;
+                letter-spacing: 0.05em;
+                border: none;
                 position: sticky;
                 top: 0;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                 white-space: nowrap;
             }}
-            th:first-child {{
-                border-top-left-radius: 12px;
-            }}
-            th:last-child {{
-                border-top-right-radius: 12px;
-            }}
             td {{
-                padding: 18px 24px;
-                border-bottom: 1px solid #f1f5f9;
-                line-height: 1.6;
-                font-size: 0.95rem;
-                color: #334155;
+                padding: 12px 20px;
+                font-size: 0.9rem;
+                color: #1a1a1a;
+                line-height: 1.5;
                 vertical-align: top;
+                border-bottom: 1px solid #e5e7eb;
             }}
             tr:hover td {{
                 background-color: #fafafa;
             }}
             tr:nth-child(even) {{
-                background: #f8fafc;
-            }}
-            tr:last-child td {{
-                border-bottom: none;
-            }}
-            tr:last-child td:first-child {{
-                border-bottom-left-radius: 12px;
-            }}
-            tr:last-child td:last-child {{
-                border-bottom-right-radius: 12px;
+                background: #f5f7fa;
             }}
             td:first-child {{
                 font-weight: 600;
                 color: #1e3a8a;
                 white-space: nowrap;
+                border-left: 4px solid #1e3a8a;
             }}
-            .objective-cell span {{
-                display: inline-block;
-                margin-right: 8px;
+            .bullet {{
+                color: #1e3a8a;
+                font-weight: bold;
+                margin-right: 6px;
+            }}
+            /* Custom scrollbar */
+            ::-webkit-scrollbar {{
+                width: 8px;
+                height: 8px;
+            }}
+            ::-webkit-scrollbar-track {{
+                background: #f1f1f1;
+            }}
+            ::-webkit-scrollbar-thumb {{
+                background: #c1c1c1;
+            }}
+            ::-webkit-scrollbar-thumb:hover {{
+                background: #a1a1a1;
             }}
         </style>
         <div class="table-container">
@@ -91,27 +90,28 @@ def generate_table_html(df):
     """
     return html
 
+
 def main():
     st.title("Clinical Trials Table Visualizer")
     st.markdown("""
         <style>
             .stApp {
-                background-color: #f8fafc;
-            }
-            section[data-testid="stSidebar"] {
-                background-color: #f1f5f9;
+                background-color: #f8f9fa;
             }
             .stDownloadButton {
-                background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
+                background: #1e3a8a !important;
                 color: white !important;
                 border: none !important;
                 padding: 0.5rem 1rem !important;
-                border-radius: 6px !important;
-                font-weight: 600 !important;
-                transition: opacity 0.2s !important;
+                font-weight: 500 !important;
+                font-family: 'Avenir', system-ui, sans-serif !important;
             }
             .stDownloadButton:hover {
                 opacity: 0.9 !important;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+            }
+            div[data-testid="stMarkdown"] {
+                font-family: 'Avenir', system-ui, sans-serif;
             }
         </style>
     """, unsafe_allow_html=True)
