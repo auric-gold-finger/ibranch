@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import base64
-from PIL import Image
-import io
 
 st.set_page_config(layout="wide", page_title="Clinical Trials Visualizer")
 
@@ -47,7 +45,6 @@ def generate_html_table(df):
     </style>
     """
     
-    # Convert objectives to HTML lists
     df = df.copy()
     df['Objective'] = df['Objective'].apply(lambda x: 
         '<ul class="objective-list">' + 
@@ -59,10 +56,8 @@ def generate_html_table(df):
     return css + table_html
 
 def get_download_files(df, html_content):
-    # HTML
     html_b64 = base64.b64encode(html_content.encode()).decode()
     
-    # SVG
     svg_content = f'''
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800">
@@ -75,7 +70,6 @@ def get_download_files(df, html_content):
     '''
     svg_b64 = base64.b64encode(svg_content.encode()).decode()
     
-    # CSV
     csv = df.to_csv(index=False).encode()
     csv_b64 = base64.b64encode(csv).decode()
     
@@ -130,7 +124,6 @@ def display_download_buttons(html_b64, svg_b64, csv_b64):
 def main():
     st.title("Clinical Trials Table Visualizer")
 
-    # Add this to your default data section in the main() function:
     default_data = {
         'Phase': ['0', 'I', 'Ib', 'IIa', 'IIb', 'III', 'IIIb', 'IV'],
         'Study Design': [
@@ -175,7 +168,6 @@ def main():
         ]
     }
 
-    df = pd.DataFrame(default_data)
     st.markdown("""
         <style>
             .stApp {
@@ -192,22 +184,14 @@ def main():
     if uploaded_file:
         df = pd.read_csv(uploaded_file)
     else:
-        # Use default data
-        df = pd.DataFrame({
-            'Phase': ['0', 'I', 'Ib', 'IIa', 'IIb', 'III', 'IIIb', 'IV'],
-            'Study Design': ['Proof-of-concept subtherapeutic dose'],  # Add rest of default data
-            # ... add other columns
-        })
+        df = pd.DataFrame(default_data)
     
-    # Display interactive dataframe
     st.dataframe(df, use_container_width=True, hide_index=True)
     
-    # Display HTML table view
     html_content = generate_html_table(df)
     st.markdown("### HTML Table View", unsafe_allow_html=True)
     st.markdown(html_content, unsafe_allow_html=True)
     
-    # Generate and display download buttons
     html_b64, svg_b64, csv_b64 = get_download_files(df, html_content)
     st.markdown("### Download Options", unsafe_allow_html=True)
     display_download_buttons(html_b64, svg_b64, csv_b64)
