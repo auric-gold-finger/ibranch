@@ -17,12 +17,11 @@ def generate_table_html(df):
             @import url('https://fonts.cdnfonts.com/css/avenir');
             
             .table-container {{
-                background: white;
-                border: 1px solid #e2e8f0;
+                background: #f0f2f5;
+                padding: 1px;
                 box-shadow: 
                     0 4px 6px -1px rgba(0, 0, 0, 0.1),
-                    0 2px 4px -1px rgba(0, 0, 0, 0.06),
-                    0 0 0 1px rgba(0, 0, 0, 0.05);
+                    0 2px 4px -1px rgba(0, 0, 0, 0.06);
                 max-width: 1400px;
                 margin: 0 auto;
                 position: relative;
@@ -30,16 +29,16 @@ def generate_table_html(df):
             
             table {{
                 width: 100%;
-                border-collapse: collapse;
+                border-collapse: separate;
+                border-spacing: 2px;
                 font-family: 'Avenir', system-ui, sans-serif;
-                background: white;
+                background: #f0f2f5;
             }}
             
             thead {{
                 position: sticky;
                 top: 0;
                 z-index: 1;
-                box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1);
             }}
             
             th {{
@@ -51,16 +50,10 @@ def generate_table_html(df):
                 font-size: 0.85rem;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
-                border: none;
-                position: relative;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }}
             
-            /* Symmetric header borders */
-            th:not(:last-child) {{
-                border-right: 1px solid rgba(255, 255, 255, 0.1);
-            }}
-            
-            /* Column widths for symmetry */
+            /* Column widths */
             th:nth-child(1) {{ width: 8%; }}
             th:nth-child(2) {{ width: 22%; }}
             th:nth-child(3) {{ width: 20%; }}
@@ -73,52 +66,27 @@ def generate_table_html(df):
                 color: #1a1a1a;
                 line-height: 1.5;
                 vertical-align: top;
-                border-bottom: 1px solid #e5e7eb;
-                position: relative;
-            }}
-            
-            /* Cell borders for visual structure */
-            td:not(:last-child) {{
-                border-right: 1px solid #f0f0f0;
+                background: white;
+                box-shadow: 
+                    0 2px 4px rgba(0, 0, 0, 0.04),
+                    0 1px 2px rgba(0, 0, 0, 0.06);
+                transition: all 0.2s ease;
             }}
             
             tr:hover td {{
-                background-color: #fafafa;
+                transform: translateY(-1px);
+                box-shadow: 
+                    0 4px 6px rgba(0, 0, 0, 0.06),
+                    0 2px 4px rgba(0, 0, 0, 0.08);
             }}
             
-            tr:nth-child(even) {{
-                background: #f5f7fa;
-            }}
-            
-            /* Enhanced Phase column */
+            /* Phase column */
             td:first-child {{
                 font-weight: 600;
                 color: #1e3a8a;
                 white-space: nowrap;
-                border-left: 3px solid #1e3a8a;
-                background-clip: padding-box;
                 text-align: center;
-            }}
-            
-            /* Symmetric column shadows */
-            td:first-child::after,
-            td:last-child::before {{
-                content: '';
-                position: absolute;
-                top: 0;
-                width: 4px;
-                height: 100%;
-                pointer-events: none;
-            }}
-            
-            td:first-child::after {{
-                right: -2px;
-                background: linear-gradient(90deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0) 100%);
-            }}
-            
-            td:last-child::before {{
-                left: -2px;
-                background: linear-gradient(-90deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0) 100%);
+                background: white;
             }}
             
             /* Enhanced bullets */
@@ -133,7 +101,7 @@ def generate_table_html(df):
                 text-align: center;
             }}
             
-            /* List item spacing */
+            /* List styling */
             td ul {{
                 margin: 0;
                 padding: 0;
@@ -146,63 +114,32 @@ def generate_table_html(df):
                 position: relative;
             }}
             
-            /* Table container effects */
-            .table-wrapper {{
-                position: relative;
-                border: 1px solid #e2e8f0;
-            }}
-            
-            /* Symmetric top/bottom shadows */
-            .table-container::before,
-            .table-container::after {{
-                content: '';
-                position: absolute;
-                left: 0;
-                right: 0;
-                height: 10px;
-                pointer-events: none;
-            }}
-            
-            .table-container::before {{
-                top: 0;
-                background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 100%);
-            }}
-            
-            .table-container::after {{
-                bottom: 0;
-                background: linear-gradient(0deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 100%);
-            }}
-            
-            /* Custom scrollbar for symmetry */
+            /* Scrollbar styling */
             ::-webkit-scrollbar {{
                 width: 10px;
                 height: 10px;
             }}
             
             ::-webkit-scrollbar-track {{
-                background: #f1f1f1;
-                border: 1px solid #e2e8f0;
+                background: #f0f2f5;
             }}
             
             ::-webkit-scrollbar-thumb {{
                 background: #c1c1c1;
-                border: 2px solid #f1f1f1;
+                border: 2px solid #f0f2f5;
             }}
             
             ::-webkit-scrollbar-thumb:hover {{
                 background: #a1a1a1;
             }}
             
-            /* Corner treatments */
+            /* Corner treatment */
             ::-webkit-scrollbar-corner {{
-                background: #f1f1f1;
-                border: 1px solid #e2e8f0;
+                background: #f0f2f5;
             }}
         </style>
         <div class="table-container">
-            <div class="table-wrapper">
-                {df.to_html(index=False, escape=False, classes='styled-table')}
-            </div>
+            {df.to_html(index=False, escape=False, classes='styled-table')}
         </div>
     </div>
     """
