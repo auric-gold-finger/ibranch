@@ -169,7 +169,7 @@ def get_svg_download(table_html):
 
 def add_png_download_button():
     js_code = """
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
     <style>
         .png-download-btn {
             background: #000000;
@@ -192,53 +192,57 @@ def add_png_download_button():
     <button class="png-download-btn" onclick="downloadTableAsPNG()">Download PNG</button>
     
     <script>
-    async function downloadTableAsPNG() {
-        try {
-            // Add loading state
-            const button = document.querySelector('.png-download-btn');
-            button.innerHTML = 'Generating PNG...';
-            button.style.opacity = '0.7';
-            
-            // Find the table in the iframe
-            const iframes = document.querySelectorAll('iframe');
-            let table;
-            for (const iframe of iframes) {
+    function downloadTableAsPNG() {
+        const button = document.querySelector('.png-download-btn');
+        button.innerHTML = 'Generating PNG...';
+        button.style.opacity = '0.7';
+        
+        // Find the table in the iframe
+        const iframes = document.querySelectorAll('iframe');
+        let tableContainer;
+        
+        for (const iframe of iframes) {
+            try {
                 const doc = iframe.contentDocument || iframe.contentWindow.document;
-                table = doc.querySelector('.table-container');
-                if (table) break;
+                tableContainer = doc.querySelector('.table-container');
+                if (tableContainer) break;
+            } catch (e) {
+                console.log('Searching next iframe...');
             }
-            
-            if (!table) {
-                console.error('Table not found');
-                button.innerHTML = 'Error - Try Again';
-                return;
-            }
+        }
+        
+        if (!tableContainer) {
+            console.error('Table container not found');
+            button.innerHTML = 'Error - Try Again';
+            return;
+        }
 
-            // Create canvas
-            const canvas = await html2canvas(table, {
-                scale: 2,
-                backgroundColor: '#f0f2f5',
-                logging: true,
-                useCORS: true,
-                allowTaint: true,
-                foreignObjectRendering: true
-            });
-            
-            // Create download link
-            const image = canvas.toDataURL('image/png', 1.0);
+        const scale = 2;
+        const width = tableContainer.offsetWidth * scale;
+        const height = tableContainer.offsetHeight * scale;
+
+        domtoimage.toBlob(tableContainer, {
+            width: width,
+            height: height,
+            style: {
+                transform: 'scale(' + scale + ')',
+                transformOrigin: 'top left',
+                width: tableContainer.offsetWidth + "px",
+                height: tableContainer.offsetHeight + "px"
+            }
+        })
+        .then(function(blob) {
             const link = document.createElement('a');
             link.download = 'clinical_trials_table.png';
-            link.href = image;
+            link.href = URL.createObjectURL(blob);
             link.click();
-            
-            // Reset button
             button.innerHTML = 'Download PNG';
             button.style.opacity = '1';
-        } catch (error) {
+        })
+        .catch(function(error) {
             console.error('Error generating PNG:', error);
-            const button = document.querySelector('.png-download-btn');
             button.innerHTML = 'Error - Try Again';
-        }
+        });
     }
     </script>
     """
