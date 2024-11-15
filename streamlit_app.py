@@ -62,7 +62,7 @@ def generate_table_html(df):
             th:nth-child(4) {{ width: 15%; }}
             th:nth-child(5) {{ width: 35%; }}
             
-            td {
+            td {{
                 background: white;
                 padding: 14px 20px;
                 font-size: 0.9rem;
@@ -75,7 +75,7 @@ def generate_table_html(df):
                 position: relative;
                 transform: translate(-1px, -1px);
                 transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            }
+            }}
             
             tr:hover td {{
                 transform: translate(-2px, -2px);
