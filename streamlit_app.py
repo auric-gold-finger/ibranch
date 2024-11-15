@@ -165,7 +165,7 @@ def main():
             }
             .stDownloadButton:hover {
                 opacity: 0.9 !important;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.15) !important;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.25) !important;
                 transform: translateY(-1px) !important;
             }
             .stTitle {
