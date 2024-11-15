@@ -148,16 +148,22 @@ def generate_table_html(df):
     return html
 
 def get_svg_download(html_content):
-    # Create SVG wrapper around the HTML content
-    svg_content = f"""<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="800">
-        <foreignObject width="1200" height="800">
-            <div xmlns="http://www.w3.org/1999/xhtml">
-                {html_content}
-            </div>
-        </foreignObject>
-    </svg>
-    """
+    # Clean and wrap the HTML content for SVG
+    cleaned_html = html_content.replace('<', '&lt;').replace('>', '&gt;')
+    
+    svg_content = f'''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="800">
+    <defs>
+        <style type="text/css">
+            @import url('https://fonts.cdnfonts.com/css/avenir');
+        </style>
+    </defs>
+    <foreignObject width="1200" height="800">
+        <div xmlns="http://www.w3.org/1999/xhtml">
+            {cleaned_html}
+        </div>
+    </foreignObject>
+</svg>'''
     return svg_content
 
 def main():
@@ -245,8 +251,8 @@ def main():
     table_html = generate_table_html(df)
     components.html(table_html, height=600, scrolling=True)
     
-    col1, col2, col3 = st.columns(3)  # Changed from 2 to 3 columns
-    
+    # Then in your main() function, add:
+    col1, col2, col3 = st.columns(3)
     with col1:
         st.download_button(
             label="Download HTML",
@@ -261,7 +267,6 @@ def main():
             file_name="table.csv",
             mime="text/csv"
         )
-
     with col3:
         svg_content = get_svg_download(table_html)
         st.download_button(
