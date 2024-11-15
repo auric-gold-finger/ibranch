@@ -8,68 +8,80 @@ st.set_page_config(layout="wide", page_title="Clinical Trials Visualizer")
 def generate_table_html(df):
     df = df.copy()
     df['Objective'] = df['Objective'].apply(lambda x: 
-        '<br>'.join([f"<span style='color: #4a5568'>•</span> {item.strip()}" for item in x.split(';')])
+        '<br>'.join([f"<span style='color: #4b5563'>▪</span> {item.strip()}" for item in x.split(';')])
     )
     
     html = f"""
-    <div style="padding: 1rem; font-family: system-ui, -apple-system, sans-serif;">
+    <div style="padding: 1rem;">
         <style>
+            @import url('https://fonts.cdnfonts.com/css/avenir');
+            
             .table-container {{
                 background: white;
-                border-radius: 12px;
-                padding: 1.5rem;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                border-radius: 16px;
+                padding: 2rem;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
                 overflow: hidden;
+                max-width: 1400px;
+                margin: 0 auto;
             }}
             table {{
                 width: 100%;
                 border-collapse: separate;
                 border-spacing: 0;
+                font-family: 'Avenir', system-ui, sans-serif;
             }}
             th {{
-                background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+                background: #1e3a8a;
                 color: white;
-                padding: 16px;
+                padding: 18px 24px;
                 text-align: left;
-                font-weight: 600;
-                font-size: 0.95rem;
+                font-weight: 500;
+                font-size: 0.9rem;
                 text-transform: uppercase;
-                letter-spacing: 0.05em;
-                border-bottom: 2px solid #2563eb;
+                letter-spacing: 0.03em;
+                border-bottom: none;
                 position: sticky;
                 top: 0;
+                white-space: nowrap;
             }}
             th:first-child {{
-                border-top-left-radius: 8px;
+                border-top-left-radius: 12px;
             }}
             th:last-child {{
-                border-top-right-radius: 8px;
+                border-top-right-radius: 12px;
             }}
             td {{
-                padding: 16px;
-                border-bottom: 1px solid #e5e7eb;
+                padding: 18px 24px;
+                border-bottom: 1px solid #f1f5f9;
                 line-height: 1.6;
                 font-size: 0.95rem;
-                color: #1f2937;
+                color: #334155;
+                vertical-align: top;
             }}
             tr:hover td {{
-                background-color: #f8fafc;
+                background-color: #fafafa;
             }}
             tr:nth-child(even) {{
-                background: #f1f5f9;
+                background: #f8fafc;
             }}
             tr:last-child td {{
                 border-bottom: none;
             }}
             tr:last-child td:first-child {{
-                border-bottom-left-radius: 8px;
+                border-bottom-left-radius: 12px;
             }}
             tr:last-child td:last-child {{
-                border-bottom-right-radius: 8px;
+                border-bottom-right-radius: 12px;
             }}
-            .phase-column {{
+            td:first-child {{
                 font-weight: 600;
-                color: #1e40af;
+                color: #1e3a8a;
+                white-space: nowrap;
+            }}
+            .objective-cell span {{
+                display: inline-block;
+                margin-right: 8px;
             }}
         </style>
         <div class="table-container">
