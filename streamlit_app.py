@@ -169,7 +169,7 @@ def get_svg_download(table_html):
 
 def add_png_download_button():
     js_code = """
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         .png-download-btn {
             background: #000000;
@@ -192,31 +192,53 @@ def add_png_download_button():
     <button class="png-download-btn" onclick="downloadTableAsPNG()">Download PNG</button>
     
     <script>
-    function downloadTableAsPNG() {
-        const table = document.querySelector('.table-container');
-        
-        // Add loading state to button
-        const button = document.querySelector('.png-download-btn');
-        const originalText = button.innerHTML;
-        button.innerHTML = 'Generating PNG...';
-        button.style.opacity = '0.7';
-        
-        html2canvas(table, {
-            scale: 2,  // Higher resolution
-            backgroundColor: '#f0f2f5',
-            logging: false,
-            useCORS: true
-        }).then(canvas => {
-            // Reset button
-            button.innerHTML = originalText;
-            button.style.opacity = '1';
+    async function downloadTableAsPNG() {
+        try {
+            // Add loading state
+            const button = document.querySelector('.png-download-btn');
+            button.innerHTML = 'Generating PNG...';
+            button.style.opacity = '0.7';
             
-            // Download the image
+            // Find the table in the iframe
+            const iframes = document.querySelectorAll('iframe');
+            let table;
+            for (const iframe of iframes) {
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                table = doc.querySelector('.table-container');
+                if (table) break;
+            }
+            
+            if (!table) {
+                console.error('Table not found');
+                button.innerHTML = 'Error - Try Again';
+                return;
+            }
+
+            // Create canvas
+            const canvas = await html2canvas(table, {
+                scale: 2,
+                backgroundColor: '#f0f2f5',
+                logging: true,
+                useCORS: true,
+                allowTaint: true,
+                foreignObjectRendering: true
+            });
+            
+            // Create download link
+            const image = canvas.toDataURL('image/png', 1.0);
             const link = document.createElement('a');
             link.download = 'clinical_trials_table.png';
-            link.href = canvas.toDataURL('image/png');
+            link.href = image;
             link.click();
-        });
+            
+            // Reset button
+            button.innerHTML = 'Download PNG';
+            button.style.opacity = '1';
+        } catch (error) {
+            console.error('Error generating PNG:', error);
+            const button = document.querySelector('.png-download-btn');
+            button.innerHTML = 'Error - Try Again';
+        }
     }
     </script>
     """
