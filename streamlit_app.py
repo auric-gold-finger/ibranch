@@ -43,7 +43,7 @@ def generate_table_html(df):
             }}
             
             th {{
-                background: #1e3a8a;
+                background: #000000;
                 color: white;
                 padding: 16px 20px;
                 text-align: left;
@@ -86,7 +86,7 @@ def generate_table_html(df):
             
             td:first-child {{
                 font-weight: 600;
-                color: #1e3a8a;
+                color: #000000;
                 white-space: nowrap;
                 text-align: center;
             }}
