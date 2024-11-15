@@ -155,7 +155,7 @@ def main():
                 background-color: #f8f9fa;
             }
             .stDownloadButton {
-                background: #1e3a8a !important;
+                background: #000000 !important;
                 color: white !important;
                 border: none !important;
                 padding: 0.5rem 1rem !important;
@@ -227,7 +227,7 @@ def main():
     else:
         df = pd.DataFrame(default_data)
 
-    st.dataframe(df, use_container_width=True, hide_index=True)
+    #st.dataframe(df, use_container_width=True, hide_index=True)
     
     table_html = generate_table_html(df)
     components.html(table_html, height=600, scrolling=True)
