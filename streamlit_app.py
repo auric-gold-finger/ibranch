@@ -19,9 +19,6 @@ def generate_table_html(df):
             .table-container {{
                 background: #f0f2f5;
                 padding: 1px;
-                box-shadow: 
-                    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-                    0 2px 4px -1px rgba(0, 0, 0, 0.06);
                 max-width: 1400px;
                 margin: 0 auto;
                 position: relative;
@@ -30,7 +27,7 @@ def generate_table_html(df):
             table {{
                 width: 100%;
                 border-collapse: separate;
-                border-spacing: 2px;
+                border-spacing: 3px;
                 font-family: 'Avenir', system-ui, sans-serif;
                 background: #f0f2f5;
             }}
@@ -50,7 +47,7 @@ def generate_table_html(df):
                 font-size: 0.85rem;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
             }}
             
             /* Column widths */
@@ -61,23 +58,23 @@ def generate_table_html(df):
             th:nth-child(5) {{ width: 35%; }}
             
             td {{
+                background: white;
                 padding: 14px 20px;
                 font-size: 0.9rem;
                 color: #1a1a1a;
                 line-height: 1.5;
                 vertical-align: top;
-                background: white;
                 box-shadow: 
-                    0 2px 4px rgba(0, 0, 0, 0.04),
-                    0 1px 2px rgba(0, 0, 0, 0.06);
+                    0 2px 3px rgba(0, 0, 0, 0.03),
+                    0 1px 2px rgba(0, 0, 0, 0.03);
                 transition: all 0.2s ease;
             }}
             
             tr:hover td {{
                 transform: translateY(-1px);
                 box-shadow: 
-                    0 4px 6px rgba(0, 0, 0, 0.06),
-                    0 2px 4px rgba(0, 0, 0, 0.08);
+                    0 3px 6px rgba(0, 0, 0, 0.06),
+                    0 2px 4px rgba(0, 0, 0, 0.04);
             }}
             
             /* Phase column */
@@ -86,14 +83,12 @@ def generate_table_html(df):
                 color: #1e3a8a;
                 white-space: nowrap;
                 text-align: center;
-                background: white;
             }}
             
-            /* Enhanced bullets */
+            /* Bullet points */
             .bullet {{
                 display: inline-block;
                 color: #1e3a8a;
-                font-weight: bold;
                 margin-right: 8px;
                 width: 12px;
                 height: 12px;
@@ -101,7 +96,7 @@ def generate_table_html(df):
                 text-align: center;
             }}
             
-            /* List styling */
+            /* Clean list styling */
             td ul {{
                 margin: 0;
                 padding: 0;
@@ -114,10 +109,10 @@ def generate_table_html(df):
                 position: relative;
             }}
             
-            /* Scrollbar styling */
+            /* Minimal scrollbar */
             ::-webkit-scrollbar {{
-                width: 10px;
-                height: 10px;
+                width: 8px;
+                height: 8px;
             }}
             
             ::-webkit-scrollbar-track {{
@@ -131,11 +126,6 @@ def generate_table_html(df):
             
             ::-webkit-scrollbar-thumb:hover {{
                 background: #a1a1a1;
-            }}
-            
-            /* Corner treatment */
-            ::-webkit-scrollbar-corner {{
-                background: #f0f2f5;
             }}
         </style>
         <div class="table-container">
