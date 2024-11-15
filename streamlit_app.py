@@ -62,20 +62,20 @@ def generate_table_html(df):
             th:nth-child(4) {{ width: 15%; }}
             th:nth-child(5) {{ width: 35%; }}
             
-            td {{
+            td {
                 background: white;
                 padding: 14px 20px;
                 font-size: 0.9rem;
-                color: #1a1a1a;
+                color: #000000;
                 line-height: 1.5;
-                vertical-align: top;
+                vertical-align: middle;  /* Changed from 'top' to 'middle' */
                 box-shadow: 
-                    2px 2px 4px rgba(0, 0, 0, 0.12),
-                    3px 3px 6px rgba(0, 0, 0, 0.06);
+                    2px 2px 4px rgba(0, 0, 0, 0.07),
+                    3px 3px 6px rgba(0, 0, 0, 0.03);
                 position: relative;
-                transform: translate(-1px, -1px);  /* Slight lift */
+                transform: translate(-1px, -1px);
                 transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            }}
+            }
             
             tr:hover td {{
                 transform: translate(-2px, -2px);
