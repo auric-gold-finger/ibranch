@@ -39,6 +39,7 @@ def generate_table_html(df):
                 position: sticky;
                 top: 0;
                 z-index: 1;
+                box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1);
             }}
             
             th {{
@@ -54,16 +55,17 @@ def generate_table_html(df):
                 position: relative;
             }}
             
-            /* Header bottom shadow */
-            thead::after {{
-                content: '';
-                position: absolute;
-                left: 0;
-                right: 0;
-                bottom: -5px;
-                height: 5px;
-                background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
+            /* Symmetric header borders */
+            th:not(:last-child) {{
+                border-right: 1px solid rgba(255, 255, 255, 0.1);
             }}
+            
+            /* Column widths for symmetry */
+            th:nth-child(1) {{ width: 8%; }}
+            th:nth-child(2) {{ width: 22%; }}
+            th:nth-child(3) {{ width: 20%; }}
+            th:nth-child(4) {{ width: 15%; }}
+            th:nth-child(5) {{ width: 35%; }}
             
             td {{
                 padding: 14px 20px;
@@ -75,6 +77,11 @@ def generate_table_html(df):
                 position: relative;
             }}
             
+            /* Cell borders for visual structure */
+            td:not(:last-child) {{
+                border-right: 1px solid #f0f0f0;
+            }}
+            
             tr:hover td {{
                 background-color: #fafafa;
             }}
@@ -83,72 +90,113 @@ def generate_table_html(df):
                 background: #f5f7fa;
             }}
             
-            /* Phase column styling */
+            /* Enhanced Phase column */
             td:first-child {{
                 font-weight: 600;
                 color: #1e3a8a;
                 white-space: nowrap;
                 border-left: 3px solid #1e3a8a;
                 background-clip: padding-box;
+                text-align: center;
             }}
             
-            /* Left column shadow */
-            td:first-child::after {{
+            /* Symmetric column shadows */
+            td:first-child::after,
+            td:last-child::before {{
                 content: '';
                 position: absolute;
                 top: 0;
-                right: -5px;
-                bottom: 0;
-                width: 5px;
+                width: 4px;
+                height: 100%;
+                pointer-events: none;
+            }}
+            
+            td:first-child::after {{
+                right: -2px;
                 background: linear-gradient(90deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0) 100%);
             }}
             
+            td:last-child::before {{
+                left: -2px;
+                background: linear-gradient(-90deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0) 100%);
+            }}
+            
+            /* Enhanced bullets */
             .bullet {{
+                display: inline-block;
                 color: #1e3a8a;
                 font-weight: bold;
-                margin-right: 6px;
+                margin-right: 8px;
+                width: 12px;
+                height: 12px;
+                line-height: 12px;
+                text-align: center;
             }}
             
-            /* Objective column styling */
-            td:last-child {{
-                background-color: rgba(245, 247, 250, 0.5);
+            /* List item spacing */
+            td ul {{
+                margin: 0;
+                padding: 0;
+                list-style: none;
             }}
             
-            /* Custom scrollbar */
+            td li {{
+                margin: 8px 0;
+                padding-left: 20px;
+                position: relative;
+            }}
+            
+            /* Table container effects */
+            .table-wrapper {{
+                position: relative;
+                border: 1px solid #e2e8f0;
+            }}
+            
+            /* Symmetric top/bottom shadows */
+            .table-container::before,
+            .table-container::after {{
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                height: 10px;
+                pointer-events: none;
+            }}
+            
+            .table-container::before {{
+                top: 0;
+                background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 100%);
+            }}
+            
+            .table-container::after {{
+                bottom: 0;
+                background: linear-gradient(0deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 100%);
+            }}
+            
+            /* Custom scrollbar for symmetry */
             ::-webkit-scrollbar {{
-                width: 8px;
-                height: 8px;
+                width: 10px;
+                height: 10px;
             }}
             
             ::-webkit-scrollbar-track {{
                 background: #f1f1f1;
-                border-left: 1px solid #e2e8f0;
+                border: 1px solid #e2e8f0;
             }}
             
             ::-webkit-scrollbar-thumb {{
                 background: #c1c1c1;
-                border-radius: 0;
+                border: 2px solid #f1f1f1;
             }}
             
             ::-webkit-scrollbar-thumb:hover {{
                 background: #a1a1a1;
             }}
             
-            /* Table border and shadow */
-            .table-wrapper {{
+            /* Corner treatments */
+            ::-webkit-scrollbar-corner {{
+                background: #f1f1f1;
                 border: 1px solid #e2e8f0;
-                position: relative;
-            }}
-            
-            /* Bottom shadow effect */
-            .table-container::after {{
-                content: '';
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                height: 20px;
-                background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.03) 100%);
             }}
         </style>
         <div class="table-container">
