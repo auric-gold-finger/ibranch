@@ -7,53 +7,119 @@ st.set_page_config(layout="wide", page_title="Clinical Trials Visualizer")
 def generate_html_table(df):
     css = """
     <style>
-        .styled-table {
+        table.styled-table {
             border-collapse: collapse;
             margin: 25px 0;
             font-size: 0.9em;
-            font-family: -apple-system, system-ui, BlinkMacSystemFont;
+            font-family: system-ui, -apple-system, sans-serif;
+            min-width: 400px;
             width: 100%;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-            border-radius: 5px;
+            border-radius: 8px;
             overflow: hidden;
         }
         .styled-table thead tr {
-            background-color: #1e40af;
-            color: white;
+            background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%);
+            color: #ffffff;
             text-align: left;
-            font-weight: bold;
         }
-        .styled-table th,
+        .styled-table th {
+            padding: 12px 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+        }
         .styled-table td {
             padding: 12px 15px;
-            border-bottom: 1px solid #dddddd;
+            border-bottom: thin solid #e5e7eb;
+        }
+        .styled-table tbody tr {
+            border-bottom: thin solid #e5e7eb;
+            transition: all 0.2s ease;
         }
         .styled-table tbody tr:nth-of-type(even) {
             background-color: #f8f9ff;
         }
+        .styled-table tbody tr:hover {
+            background-color: #f1f5f9;
+        }
         .styled-table tbody tr:last-of-type {
             border-bottom: 2px solid #1e40af;
         }
-        .styled-table tbody tr.active-row {
-            font-weight: bold;
-            color: #1e40af;
-        }
-        .objective-list {
+        .styled-table ul {
             margin: 0;
             padding-left: 20px;
+            list-style-type: disc;
+        }
+        .styled-table li {
+            margin: 4px 0;
+            line-height: 1.4;
         }
     </style>
     """
     
+    # Convert objectives to HTML lists with better formatting
     df = df.copy()
     df['Objective'] = df['Objective'].apply(lambda x: 
-        '<ul class="objective-list">' + 
+        '<ul>' + 
         ''.join([f'<li>{item.strip()}</li>' for item in x.split(';')]) +
         '</ul>'
     )
     
-    table_html = df.to_html(classes='styled-table', index=False, escape=False)
+    # Generate table HTML with proper structure
+    table_html = f"""
+    <div style="padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        {df.to_html(classes='styled-table', index=False, escape=False, border=0)}
+    </div>
+    """
+    
     return css + table_html
+
+def display_download_buttons(html_b64, svg_b64, csv_b64):
+    st.markdown("""
+        <style>
+        .download-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .download-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%);
+            color: white !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .download-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        </style>
+        <div class="download-container">
+            <a href="data:text/html;base64,{html_b64}" 
+               download="table.html" 
+               class="download-button">
+                Download HTML
+            </a>
+            <a href="data:image/svg+xml;base64,{svg_b64}" 
+               download="table.svg" 
+               class="download-button">
+                Download SVG
+            </a>
+            <a href="data:text/csv;base64,{csv_b64}" 
+               download="table.csv" 
+               class="download-button">
+                Download CSV
+            </a>
+        </div>
+    """, unsafe_allow_html=True)
 
 def get_download_files(df, html_content):
     html_b64 = base64.b64encode(html_content.encode()).decode()
