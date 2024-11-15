@@ -32,6 +32,11 @@ def generate_table_html(df):
                 background: #f0f2f5;
             }}
             
+            /* Remove all default table borders */
+            table, th, td {{
+                border: none !important;
+            }}
+            
             thead {{
                 position: sticky;
                 top: 0;
@@ -109,6 +114,16 @@ def generate_table_html(df):
                 position: relative;
             }}
             
+            /* Override any default table borders from DataFrame */
+            .dataframe {{
+                border: none !important;
+            }}
+            
+            .dataframe th, 
+            .dataframe td {{
+                border: none !important;
+            }}
+            
             /* Minimal scrollbar */
             ::-webkit-scrollbar {{
                 width: 8px;
@@ -129,7 +144,7 @@ def generate_table_html(df):
             }}
         </style>
         <div class="table-container">
-            {df.to_html(index=False, escape=False, classes='styled-table')}
+            {df.to_html(index=False, escape=False, classes='styled-table dataframe')}
         </div>
     </div>
     """
