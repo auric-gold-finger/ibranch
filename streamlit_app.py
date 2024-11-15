@@ -147,24 +147,57 @@ def generate_table_html(df):
     """
     return html
 
-def get_svg_download(html_content):
-    # Clean and wrap the HTML content for SVG
-    cleaned_html = html_content.replace('<', '&lt;').replace('>', '&gt;')
-    
-    svg_content = f'''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="800">
-    <defs>
-        <style type="text/css">
-            @import url('https://fonts.cdnfonts.com/css/avenir');
-        </style>
-    </defs>
-    <foreignObject width="1200" height="800">
-        <div xmlns="http://www.w3.org/1999/xhtml">
-            {cleaned_html}
-        </div>
-    </foreignObject>
-</svg>'''
-    return svg_content
+def get_svg_download(table_html):
+    # Create base64-encoded version for download
+    svg_wrapper = f'''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" width="1200" height="800">
+        <foreignObject width="100%" height="100%">
+            <xhtml:html>
+                <xhtml:head>
+                    <xhtml:style>
+                        @import url('https://fonts.cdnfonts.com/css/avenir');
+                        .table-container {{
+                            background: #f0f2f5;
+                            padding: 1px;
+                            width: 100%;
+                        }}
+                        table {{
+                            width: 100%;
+                            border-collapse: separate;
+                            border-spacing: 4px;
+                            font-family: 'Avenir', sans-serif;
+                            background: #f0f2f5;
+                        }}
+                        th {{
+                            background: #000000;
+                            color: white;
+                            padding: 16px 20px;
+                            text-align: left;
+                            font-size: 0.85rem;
+                            text-transform: uppercase;
+                            letter-spacing: 0.05em;
+                        }}
+                        td {{
+                            background: white;
+                            padding: 14px 20px;
+                            font-size: 0.9rem;
+                            color: #000000;
+                            line-height: 1.5;
+                            vertical-align: middle;
+                        }}
+                        .bullet {{
+                            color: #1e3a8a;
+                            margin-right: 8px;
+                        }}
+                    </xhtml:style>
+                </xhtml:head>
+                <xhtml:body>
+                    {table_html}
+                </xhtml:body>
+            </xhtml:html>
+        </foreignObject>
+    </svg>'''
+    return svg_wrapper
 
 def main():
     st.title("Clinical Trials Table Visualizer")
