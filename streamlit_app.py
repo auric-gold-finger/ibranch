@@ -129,6 +129,53 @@ def display_download_buttons(html_b64, svg_b64, csv_b64):
 
 def main():
     st.title("Clinical Trials Table Visualizer")
+
+    # Add this to your default data section in the main() function:
+    default_data = {
+        'Phase': ['0', 'I', 'Ib', 'IIa', 'IIb', 'III', 'IIIb', 'IV'],
+        'Study Design': [
+            'Proof-of-concept subtherapeutic dose',
+            'Single-arm dose escalation',
+            'Multi-arm dose escalation',
+            'Pilot dose-finding',
+            'Proof-of-concept case series or randomized controlled trial',
+            'Randomized controlled trial',
+            'Randomized controlled trial',
+            'Post-market surveillance'
+        ],
+        'Number of Participants': [
+            '<15 healthy volunteers or patients with the condition',
+            '20-80 healthy volunteers or patients with the condition',
+            '20-80 healthy volunteers or patients with the condition',
+            '~50 patients with the condition',
+            '100-300 patients with the condition',
+            '1000-3000 patients with the condition',
+            '1000-3000 patients with the condition',
+            'Variable'
+        ],
+        'Trial Duration': [
+            '≤14 days',
+            'Several months',
+            'Several months',
+            'Several months up to one year',
+            'Several months up to two years',
+            'One to four years',
+            'One to four years',
+            'A few months up to several years'
+        ],
+        'Objective': [
+            'Expedite clinical evaluation of drugs;Demonstrate drug-target effects;Initial pharmakokinetics',
+            'Safety;Determine the highest dose without severe side effects',
+            'Safety;Determine the highest dose without severe side effects',
+            'Test for effective dosage;Determine therapeutic regimen;Continue safety testing;Monitor side effects including drug-drug interactions',
+            'Efficacy in achieving the primary outcome;Continue safety testing;Monitor side effects including drug-drug interactions',
+            'Evaluate efficacy and side effects;Compare to placebo or other existing treatments',
+            'Gather aditional data;Test efficacy in different patient populations',
+            'Monitor long-term safety and efficacy'
+        ]
+    }
+
+    df = pd.DataFrame(default_data)
     st.markdown("""
         <style>
             .stApp {
