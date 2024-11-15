@@ -169,7 +169,7 @@ def get_svg_download(table_html):
 
 def add_png_download_button():
     js_code = """
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
     <style>
         .png-download-btn {
             background: #000000;
@@ -195,52 +195,30 @@ def add_png_download_button():
     function downloadTableAsPNG() {
         const button = document.querySelector('.png-download-btn');
         button.innerHTML = 'Generating PNG...';
-        button.style.opacity = '0.7';
         
-        // Find the table in the iframe
-        const iframes = document.querySelectorAll('iframe');
-        let tableContainer;
+        // Get all iframes and find the one containing our table
+        const streamlitDoc = document.querySelector('iframe[title="streamlit_html_sandbox"]').contentDocument;
+        const targetNode = streamlitDoc.querySelector('.table-container');
         
-        for (const iframe of iframes) {
-            try {
-                const doc = iframe.contentDocument || iframe.contentWindow.document;
-                tableContainer = doc.querySelector('.table-container');
-                if (tableContainer) break;
-            } catch (e) {
-                console.log('Searching next iframe...');
-            }
-        }
-        
-        if (!tableContainer) {
-            console.error('Table container not found');
-            button.innerHTML = 'Error - Try Again';
+        if (!targetNode) {
+            button.innerHTML = 'Error - Table Not Found';
             return;
         }
-
-        const scale = 2;
-        const width = tableContainer.offsetWidth * scale;
-        const height = tableContainer.offsetHeight * scale;
-
-        domtoimage.toBlob(tableContainer, {
-            width: width,
-            height: height,
-            style: {
-                transform: 'scale(' + scale + ')',
-                transformOrigin: 'top left',
-                width: tableContainer.offsetWidth + "px",
-                height: tableContainer.offsetHeight + "px"
-            }
+        
+        htmlToImage.toPng(targetNode, {
+            quality: 1.0,
+            pixelRatio: 2,
+            backgroundColor: '#f0f2f5'
         })
-        .then(function(blob) {
+        .then(function (dataUrl) {
             const link = document.createElement('a');
             link.download = 'clinical_trials_table.png';
-            link.href = URL.createObjectURL(blob);
+            link.href = dataUrl;
             link.click();
             button.innerHTML = 'Download PNG';
-            button.style.opacity = '1';
         })
-        .catch(function(error) {
-            console.error('Error generating PNG:', error);
+        .catch(function (error) {
+            console.error('Error:', error);
             button.innerHTML = 'Error - Try Again';
         });
     }
