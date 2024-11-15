@@ -2,6 +2,10 @@ import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
 import base64
+import cairosvg
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPM
+import io
 
 st.set_page_config(layout="wide", page_title="Clinical Trials Visualizer")
 
@@ -16,29 +20,54 @@ def generate_table_html(df):
         <style>
             .table-container {{
                 background: white;
-                border-radius: 8px;
-                padding: 1rem;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+                border-radius: 12px;
+                padding: 1.5rem;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             }}
             table {{
                 width: 100%;
-                border-collapse: collapse;
+                border-collapse: separate;
+                border-spacing: 0;
                 font-family: system-ui, -apple-system, sans-serif;
             }}
             th {{
-                background: #1e40af;
+                background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
                 color: white;
-                padding: 12px;
+                padding: 16px;
                 text-align: left;
                 font-weight: 600;
+                font-size: 0.95rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                border-bottom: 2px solid #2563eb;
+            }}
+            th:first-child {{
+                border-top-left-radius: 8px;
+            }}
+            th:last-child {{
+                border-top-right-radius: 8px;
             }}
             td {{
-                padding: 12px;
+                padding: 16px;
                 border-bottom: 1px solid #e5e7eb;
-                line-height: 1.4;
+                line-height: 1.6;
+                font-size: 0.95rem;
+                transition: all 0.2s ease;
+            }}
+            tr:hover td {{
+                background-color: #f8fafc;
             }}
             tr:nth-child(even) {{
-                background: #f8f9ff;
+                background: #f1f5f9;
+            }}
+            tr:last-child td {{
+                border-bottom: none;
+            }}
+            tr:last-child td:first-child {{
+                border-bottom-left-radius: 8px;
+            }}
+            tr:last-child td:last-child {{
+                border-bottom-right-radius: 8px;
             }}
         </style>
         <div class="table-container">
@@ -48,52 +77,28 @@ def generate_table_html(df):
     """
     return html
 
+def convert_to_png(html_content):
+    # Convert HTML to SVG
+    svg_content = f"""
+    <svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+        <foreignObject width="100%" height="100%">
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                {html_content}
+            </div>
+        </foreignObject>
+    </svg>
+    """
+    
+    # Convert SVG to PNG using reportlab
+    drawing = svg2rlg(io.StringIO(svg_content))
+    bio = io.BytesIO()
+    renderPM.drawToFile(drawing, bio, fmt="PNG", dpi=300)
+    return bio.getvalue()
+
 def main():
     st.title("Clinical Trials Table Visualizer")
     
-    default_data = {
-        'Phase': ['0', 'I', 'Ib', 'IIa', 'IIb', 'III', 'IIIb', 'IV'],
-        'Study Design': [
-            'Proof-of-concept subtherapeutic dose',
-            'Single-arm dose escalation',
-            'Multi-arm dose escalation',
-            'Pilot dose-finding',
-            'Proof-of-concept case series or randomized controlled trial',
-            'Randomized controlled trial',
-            'Randomized controlled trial',
-            'Post-market surveillance'
-        ],
-        'Number of Participants': [
-            '<15 healthy volunteers or patients with the condition',
-            '20-80 healthy volunteers or patients with the condition',
-            '20-80 healthy volunteers or patients with the condition',
-            '~50 patients with the condition',
-            '100-300 patients with the condition',
-            '1000-3000 patients with the condition',
-            '1000-3000 patients with the condition',
-            'Variable'
-        ],
-        'Trial Duration': [
-            '≤14 days',
-            'Several months',
-            'Several months',
-            'Several months up to one year',
-            'Several months up to two years',
-            'One to four years',
-            'One to four years',
-            'A few months up to several years'
-        ],
-        'Objective': [
-            'Expedite clinical evaluation of drugs;Demonstrate drug-target effects;Initial pharmakokinetics',
-            'Safety;Determine the highest dose without severe side effects',
-            'Safety;Determine the highest dose without severe side effects',
-            'Test for effective dosage;Determine therapeutic regimen;Continue safety testing;Monitor side effects including drug-drug interactions',
-            'Efficacy in achieving the primary outcome;Continue safety testing;Monitor side effects including drug-drug interactions',
-            'Evaluate efficacy and side effects;Compare to placebo or other existing treatments',
-            'Gather aditional data;Test efficacy in different patient populations',
-            'Monitor long-term safety and efficacy'
-        ]
-    }
+    # Your existing default_data dictionary here...
     
     uploaded_file = st.file_uploader("Upload CSV file", type=['csv'])
     
@@ -107,10 +112,12 @@ def main():
     table_html = generate_table_html(df)
     components.html(table_html, height=600, scrolling=True)
     
+    # Generate downloads
     html_b64 = base64.b64encode(table_html.encode()).decode()
     csv_b64 = base64.b64encode(df.to_csv(index=False).encode()).decode()
+    png_data = convert_to_png(table_html)
     
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     with col1:
         st.download_button(
             label="Download HTML",
@@ -124,6 +131,13 @@ def main():
             data=df.to_csv(index=False),
             file_name="table.csv",
             mime="text/csv"
+        )
+    with col3:
+        st.download_button(
+            label="Download PNG",
+            data=png_data,
+            file_name="table.png",
+            mime="image/png"
         )
 
 if __name__ == "__main__":
