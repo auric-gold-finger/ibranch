@@ -42,18 +42,18 @@ def format_list_cell(cell_value: str, delimiter: str) -> str:
     return '<ul>' + ''.join([f'<li>{item}</li>' for item in items]) + '</ul>'            
 
 def get_table_styles(column_settings: Dict, 
-                   header_border_radius: int = 6, 
-                   cell_border_radius: int = 6, 
+                   header_border_radius: int = 4, 
+                   cell_border_radius: int = 4, 
                    header_font_size: int = 20, 
                    cell_font_size: int = 18,
-                   cell_spacing: int = 8, 
+                   cell_spacing: int = 6, 
                    header_bgcolor: str = '#333333',
                    header_font_color: str = '#FFFFFF',
                    zebra_stripe: bool = False, 
-                   list_style: str = 'disc',
-                   line_height: float = 1.5,
+                   list_style: str = 'square',
+                   line_height: float = 1.3,
                    default_header_align: str = 'center',
-                   default_cell_align: str = 'left') -> str:
+                   default_cell_align: str = 'center') -> str:
    """Returns custom CSS styles for the table."""
    
    # Generate column-specific styles
