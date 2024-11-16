@@ -50,7 +50,7 @@ td {
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.07);
     transition: all 0.2s ease;
     vertical-align: middle;
-    text-align: left;
+    text-align: center;
     border: none;
 }
 
@@ -86,7 +86,6 @@ tr:hover td {
     border: none !important;
 }
 
-/* Additional style to ensure no borders */
 .dataframe, 
 .dataframe th, 
 .dataframe td {
