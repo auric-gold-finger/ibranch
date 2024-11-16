@@ -64,7 +64,7 @@ def render_styled_table(df: pd.DataFrame):
             ]},
             {'selector': 'td > *', 'props': [
                 ('display', 'inline-block'),
-                ('text-align', 'left'),
+                ('text-align', 'center'),
                 ('margin', '0 auto')
             ]}
         ])
