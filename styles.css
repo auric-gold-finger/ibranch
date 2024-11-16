@@ -48,15 +48,8 @@ td {
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.07);
     transition: all 0.2s ease;
     vertical-align: middle;
-    text-align: center;
-}
-
-td:first-child {
-    text-align: center;
-}
-
-td > *:not(ul) {
-    text-align: left;
+    display: flex;
+    align-items: center;
 }
 
 tr:hover td {
@@ -70,9 +63,11 @@ tr:hover td {
     list-style-type: disc;
     text-align: left;
     line-height: 1.2;
+    width: 100%;
 }
 
 .table-container td li {
     margin: 2px 0;
     line-height: 1.2;
+    text-align: left;
 }
