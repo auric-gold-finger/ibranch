@@ -51,6 +51,7 @@ def render_styled_table(df: pd.DataFrame):
             df_display[column] = df_display[column].apply(format_semicolon_text)
             
     styled_df = df_display.style\
+        .hide(axis='index')\
         .set_properties(**{
             'text-align': 'center',
             'vertical-align': 'middle'
