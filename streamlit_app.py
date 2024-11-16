@@ -169,7 +169,6 @@ def get_table_styles(column_settings: Dict,
     ''' if zebra_stripe else ''}
     td ul {{
         margin: 0;
-        padding-left: 20px;
         list-style-type: {list_style};
     }}
     td ul li {{
