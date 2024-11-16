@@ -8,11 +8,11 @@ st.set_page_config(layout="wide", page_title="Clinical Trials Visualizer")
 def generate_table_html(df):
     df = df.copy()
     df['Objective'] = df['Objective'].apply(lambda x: 
-    '<div class="bullet-container">' + 
-    '<br>'.join([f"<span class='bullet'>•</span><span class='bullet-text'>{item.strip()}</span>" 
-                 for item in x.split(';')]) +
-    '</div>'
-)
+        '<div class="bullet-container">' + 
+        '<br>'.join([f"<span class='bullet'>•</span><span class='bullet-text'>{item.strip()}</span>" 
+                    for item in x.split(';')]) +
+        '</div>'
+    )
     
     html = f"""
     <div style="padding: 2rem;">
