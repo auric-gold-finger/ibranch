@@ -8,14 +8,29 @@ def load_resources() -> tuple[str, str]:
     js = Path('table.js').read_text()
     return css, js
 
+def should_convert_to_list(text: str) -> bool:
+    """Determine if text should be converted to bullet points."""
+    if not isinstance(text, str) or pd.isna(text):
+        return False
+    
+    # Check for patterns that suggest a list:
+    # 1. Multiple semicolons
+    # 2. Semicolons followed by space
+    # 3. Semicolons preceded by complete sentence or phrase
+    semicolon_count = text.count(';')
+    has_spaced_semicolons = '; ' in text
+    
+    return semicolon_count > 1 or has_spaced_semicolons
+
 def format_semicolon_text(text: str) -> str:
-    """Format semicolon-separated text into bullet points if semicolons exist."""
+    """Format semicolon-separated text into bullet points if it looks like a list."""
     if pd.isna(text) or not isinstance(text, str):
         return ""
-    if ';' in text:
+    if should_convert_to_list(text):
         items = text.split(';')
         return f"<ul>{''.join([f'<li>{item.strip()}</li>' for item in items])}</ul>"
     return text
+
 
 
 def main():
