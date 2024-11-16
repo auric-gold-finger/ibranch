@@ -17,12 +17,15 @@ def should_convert_to_list(text: str) -> bool:
     has_spaced_semicolons = '; ' in text
     return semicolon_count > 1 or has_spaced_semicolons
 
-def format_semicolon_text(text: str) -> str:
-    """Format semicolon-separated text into bullet points if it looks like a list."""
+def format_semicolon_text(text: str, force_list: bool = False) -> str:
+    """Format text into bullet points if it's a list or forced to be one."""
     if pd.isna(text) or not isinstance(text, str):
         return ""
-    if should_convert_to_list(text):
-        items = text.split(';')
+    if force_list or should_convert_to_list(text):
+        if ';' in text:
+            items = text.split(';')
+        else:
+            items = [text]  # Single item list
         return f"<ul>{''.join([f'<li>{item.strip()}</li>' for item in items])}</ul>"
     return text
 
@@ -30,8 +33,11 @@ def render_original_table(df: pd.DataFrame, css: str, js: str):
     """Render table using original HTML/CSS/JS approach."""
     df_display = df.copy()
     for column in df_display.columns:
-        if df_display[column].astype(str).str.contains(';').any():
-            df_display[column] = df_display[column].apply(format_semicolon_text)
+        # Check if ANY row in this column has semicolon list format
+        if df_display[column].astype(str).str.contains(';').any() and \
+        df_display[column].apply(should_convert_to_list).any():
+            # If yes, format ALL entries in this column as lists
+            df_display[column] = df_display[column].apply(lambda x: format_semicolon_text(x, force_list=True))
     
     # Display table
     st.components.v1.html(f"<script>{js}</script>", height=0)
