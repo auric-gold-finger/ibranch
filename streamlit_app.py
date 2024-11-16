@@ -118,18 +118,21 @@ def main():
             </html>
             """
             
+            # Original style downloads
             left.download_button(
                 "Download HTML", 
                 downloadable_html, 
                 "table.html", 
-                "text/html"
+                "text/html",
+                key="html_download_original"  # Add this
             )
             
             right.download_button(
                 "Download CSV", 
                 df.to_csv(index=False), 
                 "table.csv", 
-                "text/csv"
+                "text/csv",
+                key="csv_download_original"  # Add this
             )
             
         with tab2:
@@ -190,18 +193,21 @@ def main():
             </html>
             """
             
+            # Pandas style downloads
             left.download_button(
                 "Download HTML", 
                 styled_html, 
                 "table_styled.html", 
-                "text/html"
+                "text/html",
+                key="html_download_styled"  # Add this
             )
             
             right.download_button(
                 "Download CSV", 
                 df.to_csv(index=False), 
                 "table.csv", 
-                "text/csv"
+                "text/csv",
+                key="csv_download_styled"  # Add this
             )
     else:
         st.warning("Please upload a CSV file to begin.")
