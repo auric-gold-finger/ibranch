@@ -1,122 +1,44 @@
 @import url('https://fonts.cdnfonts.com/css/avenir');
 
-/* Table container */
 .table-container {
     background: #f0f2f5;
-    padding: 1px;
+    padding: 20px;
+    border-radius: 8px;
     max-width: 1400px;
     margin: 0 auto;
-    position: relative;
+    overflow-x: auto;
 }
 
-/* Table layout */
-.table-container table {
+table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 4px;
     font-family: 'Avenir', system-ui, sans-serif;
-    background: #f0f2f5;
-    table-layout: fixed;
 }
 
-/* Headers */
-.table-container th {
-    position: relative;
-    resize: horizontal;
-    overflow: auto;
-    min-width: 100px;
-    max-width: 800px;
+th {
     background: #000000;
     color: white;
     padding: 16px 20px;
     text-align: left;
     font-weight: 500;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2),
-                4px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Resize handle */
-.table-container th::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 5px;
-    background: rgba(255, 255, 255, 0.2);
-    cursor: col-resize;
-}
-
-.table-container th:hover::after {
-    background: rgba(255, 255, 255, 0.4);
-}
-
-/* Cells */
-.table-container td {
+td {
     background: white;
     padding: 14px 20px;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #000000;
     line-height: 1.5;
-    vertical-align: middle;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.07),
-                3px 3px 6px rgba(0, 0, 0, 0.03);
-    position: relative;
-    transform: translate(-1px, -1px);
-    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    word-wrap: break-word;
-}
-
-/* Cell hover effect */
-tr:hover td {
-    transform: translate(-2px, -2px);
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15),
-                5px 5px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Bullet points */
-.bullet {
-    display: inline-block;
-    color: #1e3a8a;
-    margin-right: 8px;
-    width: 12px;
-    height: 12px;
-    line-height: 12px;
-    text-align: center;
-}
-
-.bullet-container {
-    display: table-row;
-    text-indent: -20px;
-    padding-left: 20px;
-}
-
-/* Control buttons */
-.table-controls {
-    margin-bottom: 1rem;
-    display: flex;
-    gap: 1rem;
-}
-
-.control-button {
-    background: #000000;
-    color: white;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: 'Avenir', system-ui, sans-serif;
-    font-size: 0.9rem;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.07);
     transition: all 0.2s ease;
 }
 
-.control-button:hover {
-    opacity: 0.9;
+tr:hover td {
     transform: translateY(-1px);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
 }
