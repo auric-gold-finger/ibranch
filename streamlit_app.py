@@ -169,16 +169,16 @@ def main():
                st.header("Global Settings")
                
                st.subheader("Table Settings")
-               cell_spacing = st.number_input("Cell Spacing", min_value=0, max_value=20, value=8)
+               cell_spacing = st.number_input("Cell Spacing", min_value=0, max_value=20, value=6)
                
                st.subheader("Borders")
-               header_border_radius = st.number_input("Header Border Radius", min_value=0, max_value=20, value=6)
-               cell_border_radius = st.number_input("Cell Border Radius", min_value=0, max_value=20, value=6)
+               header_border_radius = st.number_input("Header Border Radius", min_value=0, max_value=20, value=4)
+               cell_border_radius = st.number_input("Cell Border Radius", min_value=0, max_value=20, value=4)
                
                st.subheader("Typography")
                header_font_size = st.number_input("Header Font Size", min_value=12, max_value=28, value=20)
                cell_font_size = st.number_input("Cell Font Size", min_value=12, max_value=24, value=18)
-               line_height = st.number_input("Line Height", min_value=1.0, max_value=3.0, value=1.5, step=0.1)
+               line_height = st.number_input("Line Height", min_value=1.0, max_value=3.0, value=1.3, step=0.1)
 
                st.subheader("Default Alignment")
                default_header_align = st.selectbox(
@@ -190,7 +190,7 @@ def main():
                default_cell_align = st.selectbox(
                    "Cell Text Alignment",
                    options=['left', 'center', 'right'],
-                   index=0,  # left default
+                   index=1,  # left default
                    help="Default alignment for all cells unless overridden"
                )
                
@@ -201,11 +201,11 @@ def main():
                st.subheader("List Style")
                list_style = st.selectbox(
                    "Bullet Style",
-                   options=['disc', 'circle', 'square', 'decimal', 'decimal-leading-zero', 
+                   options=['square', 'circle', 'disc', 'decimal', 'decimal-leading-zero', 
                            'lower-roman', 'upper-roman', 'lower-alpha', 'upper-alpha', 'none']
                )
                
-               zebra_stripe = st.checkbox("Zebra Striping", value=False)
+               zebra_stripe = st.checkbox("Zebra Striping", value=True)
            
            # Column controls
            with st.sidebar.expander("Column Settings"):
