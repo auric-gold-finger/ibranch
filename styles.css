@@ -1,4 +1,12 @@
 @import url('https://fonts.cdnfonts.com/css/avenir');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&display=swap');
+
+
+td > * {
+    display: inline-block;
+    text-align: left;
+    margin: 0 auto;
+}
 
 .table-container {
     max-width: 1400px;
@@ -19,6 +27,7 @@ th {
     color: white;
     padding: 16px 20px;
     text-align: left;
+    font-family: 'Cormorant Garamond', serif;
     font-weight: 500;
     font-size: 1.1rem;
     text-transform: uppercase;
