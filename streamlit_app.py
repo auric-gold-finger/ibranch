@@ -24,47 +24,15 @@ def generate_table_html(df):
     """
     return html
 
-def add_png_download_button():
-    """Add a button to download the table as PNG."""
-    js_code = """
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
-    <button class="png-download-btn" onclick="downloadTableAsPNG()">Download PNG</button>
-    
-    <script>
-    function downloadTableAsPNG() {
-        const button = document.querySelector('.png-download-btn');
-        button.innerHTML = 'Generating PNG...';
-        
-        const streamlitDoc = document.querySelector('iframe[title="streamlit_html_sandbox"]').contentDocument;
-        const targetNode = streamlitDoc.querySelector('.table-container');
-        
-        if (!targetNode) {
-            button.innerHTML = 'Error - Table Not Found';
-            return;
-        }
-        
-        htmlToImage.toPng(targetNode, {
-            quality: 1.0,
-            pixelRatio: 2,
-            backgroundColor: '#f0f2f5'
-        })
-        .then(function (dataUrl) {
-            const link = document.createElement('a');
-            link.download = 'clinical_trials_table.png';
-            link.href = dataUrl;
-            link.click();
-            button.innerHTML = 'Download PNG';
-        })
-        .catch(function (error) {
-            console.error('Error:', error);
-            button.innerHTML = 'Error - Try Again';
-        });
-    }
-    </script>
-    """
-    return components.html(js_code, height=50)
+# Place this before your main function or at the top of your script
+def load_css(css_file):
+    with open(css_file) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 def main():
+    
+    load_css('styles.css')
+
     st.title("Clinical Trials Table Visualizer")
     
     # File upload
@@ -82,7 +50,7 @@ def main():
     
     # Download options
     st.markdown("### Download Options")
-    col1, col2, col3 = st.columns([1,1,1])
+    col1, col2 = st.columns([1,1])
     
     with col1:
         st.download_button(
@@ -99,9 +67,6 @@ def main():
             file_name="table.csv",
             mime="text/csv"
         )
-    
-    with col3:
-        add_png_download_button()
 
 if __name__ == "__main__":
     main()
