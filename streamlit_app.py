@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from pathlib import Path
+import streamlit.components.v1 as components
 
 def load_css() -> str:
     """Load CSS once at startup."""
