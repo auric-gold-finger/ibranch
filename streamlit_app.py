@@ -19,11 +19,18 @@ def create_table_html(df: pd.DataFrame, css: str, js: str) -> str:
     df['Objective'] = df['Objective'].apply(format_objective)
     
     return f"""
-    <style>{css}</style>
-    <script>{js}</script>
-    <div class="table-container">
-        {df.to_html(index=False, escape=False, classes='styled-table dataframe')}
-    </div>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>{css}</style>
+    </head>
+    <body>
+        <div class="table-container">
+            {df.to_html(index=False, escape=False, classes='styled-table dataframe')}
+        </div>
+        <script>{js}</script>
+    </body>
+    </html>
     """
 
 def main():
@@ -31,7 +38,12 @@ def main():
     
     # Load resources
     css, js = load_resources()
-    st.markdown(f"<style>{css}</style><script>{js}</script>", unsafe_allow_html=True)
+    
+    # Inject CSS
+    st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
+    
+    # Inject JavaScript using components
+    st.components.v1.html(f"<script>{js}</script>", height=0)
     
     st.title("Clinical Trials Table Visualizer")
     
@@ -39,15 +51,17 @@ def main():
         df = pd.read_csv(uploaded_file)
         
         # Display table
-        table_html = create_table_html(df, css, js)
-        st.markdown(table_html, unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="table-container">{df.to_html(index=False, escape=False, classes="styled-table dataframe")}</div>', 
+            unsafe_allow_html=True
+        )
         
         # Download options
         st.markdown("### Download Options")
         left, right = st.columns(2)
         left.download_button(
             "Download HTML", 
-            table_html, 
+            create_table_html(df, css, js), 
             "table.html", 
             "text/html"
         )
