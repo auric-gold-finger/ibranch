@@ -43,13 +43,6 @@ th {
         4px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Column widths */
-th:nth-child(1) { width: 8%; }
-th:nth-child(2) { width: 22%; }
-th:nth-child(3) { width: 20%; }
-th:nth-child(4) { width: 15%; }
-th:nth-child(5) { width: 35%; }
-
 /* Cell styles */
 td {
     background: white;
