@@ -136,44 +136,6 @@ def main():
             )
             
         with tab2:
-            # Add pandas styler CSS
-            st.markdown(
-                """
-                <style>
-                table {
-                    border-collapse: separate;
-                    border-spacing: 4px;
-                    width: 100%;
-                    font-family: 'Avenir', system-ui, sans-serif;
-                }
-                th {
-                    background-color: #000000;
-                    color: white;
-                    padding: 16px 20px;
-                    font-family: 'Cormorant Garamond', serif;
-                    font-weight: 500;
-                    font-size: 1.1rem;
-                    text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                    text-align: center;
-                    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-                }
-                td {
-                    background-color: white;
-                    padding: 14px 20px;
-                    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.07);
-                    font-size: 1rem;
-                    line-height: 1.5;
-                }
-                tr:hover td {
-                    transform: translateY(-1px);
-                    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
-                    transition: all 0.2s ease;
-                }
-                </style>
-                """,
-                unsafe_allow_html=True
-            )
             
             styled_df = render_styled_table(df)
             
