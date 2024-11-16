@@ -11,11 +11,12 @@ def load_resources() -> tuple[str, str]:
 def format_semicolon_text(text: str) -> str:
     """Format semicolon-separated text into bullet points if semicolons exist."""
     if pd.isna(text) or not isinstance(text, str):
-        return ""  # or return str(text) if you want to show "nan"
+        return ""
     if ';' in text:
         items = text.split(';')
         return f"<ul>{''.join([f'<li>{item.strip()}</li>' for item in items])}</ul>"
     return text
+
 
 def main():
     st.set_page_config(layout="wide", page_title="Clinical Trials Visualizer")
@@ -32,20 +33,22 @@ def main():
     st.title("Clinical Trials Table Visualizer")
     
     if uploaded_file := st.file_uploader("Upload CSV file", type=['csv']):
-        df = pd.read_csv(uploaded_file)
+        # Read CSV and fill NaN values with empty string
+        df = pd.read_csv(uploaded_file).fillna("")
         
         # Format all columns that contain semicolons
         df_display = df.copy()
         for column in df_display.columns:
-            # Check if any cell in the column contains a semicolon
             if df_display[column].astype(str).str.contains(';').any():
                 df_display[column] = df_display[column].apply(format_semicolon_text)
         
-        # Display table
+        # Display table, replacing any remaining NaN with empty string
+        table_html = df_display.to_html(index=False, escape=False, classes="styled-table dataframe", na_rep="")
         st.markdown(
-            f'<div class="table-container">{df_display.to_html(index=False, escape=False, classes="styled-table dataframe")}</div>', 
+            f'<div class="table-container">{table_html}</div>', 
             unsafe_allow_html=True
         )
+
         
         # Download options
         st.markdown("### Download Options")
