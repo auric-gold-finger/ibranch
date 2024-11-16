@@ -48,7 +48,7 @@ def generate_table_html(df):
                 padding: 16px 20px;
                 text-align: left;
                 font-weight: 500;
-                font-size: 1rem;
+                font-size: 1.3rem;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
                 box-shadow: 
@@ -65,7 +65,7 @@ def generate_table_html(df):
             td {{
                 background: white;
                 padding: 14px 20px;
-                font-size: 1rem;
+                font-size: 1.2rem;
                 color: #000000;
                 line-height: 1.5;
                 vertical-align: middle;  /* Changed from 'top' to 'middle' */
