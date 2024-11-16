@@ -1,24 +1,26 @@
 import streamlit as st
 import pandas as pd
 from pathlib import Path
-import streamlit.components.v1 as components
 
-def load_css() -> str:
-    """Load CSS once at startup."""
-    return Path('styles.css').read_text()
+def load_resources() -> tuple[str, str]:
+    """Load CSS and JavaScript from files."""
+    css = Path('styles.css').read_text()
+    js = Path('table.js').read_text()
+    return css, js
 
 def format_objective(text: str) -> str:
     """Format semicolon-separated text into bullet points."""
     items = text.split(';')
     return f"<ul>{''.join([f'<li>{item.strip()}</li>' for item in items])}</ul>"
 
-def create_table_html(df: pd.DataFrame, css: str) -> str:
-    """Create HTML table with embedded CSS for downloads."""
+def create_table_html(df: pd.DataFrame, css: str, js: str) -> str:
+    """Create HTML table with embedded CSS and JS for downloads."""
     df = df.copy()
     df['Objective'] = df['Objective'].apply(format_objective)
     
     return f"""
     <style>{css}</style>
+    <script>{js}</script>
     <div class="table-container">
         {df.to_html(index=False, escape=False, classes='styled-table dataframe')}
     </div>
@@ -27,9 +29,9 @@ def create_table_html(df: pd.DataFrame, css: str) -> str:
 def main():
     st.set_page_config(layout="wide", page_title="Clinical Trials Visualizer")
     
-    # Load CSS
-    css = load_css()
-    st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
+    # Load resources
+    css, js = load_resources()
+    st.markdown(f"<style>{css}</style><script>{js}</script>", unsafe_allow_html=True)
     
     st.title("Clinical Trials Table Visualizer")
     
@@ -37,8 +39,8 @@ def main():
         df = pd.read_csv(uploaded_file)
         
         # Display table
-        table_html = create_table_html(df, css)
-        components.html(table_html, height=600, scrolling=True)
+        table_html = create_table_html(df, css, js)
+        st.markdown(table_html, unsafe_allow_html=True)
         
         # Download options
         st.markdown("### Download Options")
