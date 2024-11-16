@@ -178,7 +178,7 @@ def main():
                 <style>{css}</style>
             </head>
             <body>
-                {styled_df.to_html(escape=False)}
+                {styled_df.to_html(escape=False, index=False)}
             </body>
             </html>
             """
