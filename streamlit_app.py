@@ -13,26 +13,6 @@ def format_objective(text: str) -> str:
     items = text.split(';')
     return f"<ul>{''.join([f'<li>{item.strip()}</li>' for item in items])}</ul>"
 
-def create_table_html(df: pd.DataFrame, css: str, js: str) -> str:
-    """Create HTML table with embedded CSS and JS for downloads."""
-    df = df.copy()
-    df['Objective'] = df['Objective'].apply(format_objective)
-    
-    return f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <style>{css}</style>
-    </head>
-    <body>
-        <div class="table-container">
-            {df.to_html(index=False, escape=False, classes='styled-table dataframe')}
-        </div>
-        <script>{js}</script>
-    </body>
-    </html>
-    """
-
 def main():
     st.set_page_config(layout="wide", page_title="Clinical Trials Visualizer")
     
@@ -50,18 +30,39 @@ def main():
     if uploaded_file := st.file_uploader("Upload CSV file", type=['csv']):
         df = pd.read_csv(uploaded_file)
         
+        # Format the Objective column
+        df_display = df.copy()
+        df_display['Objective'] = df_display['Objective'].apply(format_objective)
+        
         # Display table
         st.markdown(
-            f'<div class="table-container">{df.to_html(index=False, escape=False, classes="styled-table dataframe")}</div>', 
+            f'<div class="table-container">{df_display.to_html(index=False, escape=False, classes="styled-table dataframe")}</div>', 
             unsafe_allow_html=True
         )
         
         # Download options
         st.markdown("### Download Options")
         left, right = st.columns(2)
+        
+        # For HTML download, use the formatted version
+        downloadable_html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>{css}</style>
+        </head>
+        <body>
+            <div class="table-container">
+                {df_display.to_html(index=False, escape=False, classes='styled-table dataframe')}
+            </div>
+            <script>{js}</script>
+        </body>
+        </html>
+        """
+        
         left.download_button(
             "Download HTML", 
-            create_table_html(df, css, js), 
+            downloadable_html, 
             "table.html", 
             "text/html"
         )
