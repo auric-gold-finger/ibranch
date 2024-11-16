@@ -155,7 +155,7 @@ def main():
                     font-size: 1.1rem;
                     text-transform: uppercase;
                     letter-spacing: 0.05em;
-                    text-align: left;
+                    text-align: center;
                     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
                 }
                 td {
