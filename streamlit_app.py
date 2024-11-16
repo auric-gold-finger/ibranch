@@ -48,7 +48,7 @@ def generate_table_html(df):
                 padding: 16px 20px;
                 text-align: left;
                 font-weight: 500;
-                font-size: 0.85rem;
+                font-size: 1rem;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
                 box-shadow: 
@@ -65,7 +65,7 @@ def generate_table_html(df):
             td {{
                 background: white;
                 padding: 14px 20px;
-                font-size: 0.9rem;
+                font-size: 1rem;
                 color: #000000;
                 line-height: 1.5;
                 vertical-align: middle;  /* Changed from 'top' to 'middle' */
@@ -225,6 +225,70 @@ def add_png_download_button():
     </script>
     """
     return components.html(js_code, height=50)
+
+def create_styled_html_download(df):
+    # Create styler object
+    styler = df.style.set_properties(**{
+        'background-color': 'white',
+        'padding': '12px 15px',
+        'border-spacing': '0px',
+        'font-family': 'Avenir, sans-serif',
+        'font-size': '14px'
+    })
+    
+    # Style the header
+    styler.set_table_styles([
+        {'selector': 'thead th', 'props': [
+            ('background-color', '#000000'),
+            ('color', 'white'),
+            ('font-weight', '500'),
+            ('text-transform', 'uppercase'),
+            ('letter-spacing', '0.05em'),
+            ('padding', '16px 20px'),
+            ('font-size', '13px')
+        ]},
+        {'selector': 'tbody tr:nth-of-type(even)', 'props': [
+            ('background-color', '#f5f7fa')
+        ]},
+    ])
+
+    # Add CSS for the container
+    html = f"""
+    <html>
+    <head>
+        <style>
+            @import url('https://fonts.cdnfonts.com/css/avenir');
+            body {{
+                padding: 2rem;
+                background-color: #f0f2f5;
+                font-family: Avenir, sans-serif;
+            }}
+            .table-container {{
+                background: white;
+                padding: 2rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                max-width: 1400px;
+                margin: 0 auto;
+            }}
+            table {{
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 2px;
+            }}
+            td:first-child {{
+                font-weight: 600;
+                text-align: center;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="table-container">
+            {styler.to_html()}
+        </div>
+    </body>
+    </html>
+    """
+    return html
 
 def main():
     st.title("Clinical Trials Table Visualizer")
