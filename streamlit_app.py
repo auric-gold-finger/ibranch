@@ -105,16 +105,16 @@ def generate_table_html(df):
             }}
             
             /* Add this new style */
-            td span.bullet + br + span.bullet {
+            td span.bullet + br + span.bullet {{
                 margin-left: 0;  /* Reset margin for wrapped lines */
-            }
+            }}
 
             /* Add container for bullet points */
-            .bullet-container {
+            .bullet-container {{
                 display: table-row;
                 text-indent: -20px;  /* Create hanging indent */
                 padding-left: 20px;  /* Offset the negative indent */
-            }
+            }}
 
             td ul {{
                 margin: 0;
