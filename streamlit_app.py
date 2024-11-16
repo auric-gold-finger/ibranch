@@ -10,8 +10,8 @@ def load_resources() -> tuple[str, str]:
 
 def format_semicolon_text(text: str) -> str:
     """Format semicolon-separated text into bullet points if semicolons exist."""
-    if not isinstance(text, str):
-        return text
+    if pd.isna(text) or not isinstance(text, str):
+        return ""  # or return str(text) if you want to show "nan"
     if ';' in text:
         items = text.split(';')
         return f"<ul>{''.join([f'<li>{item.strip()}</li>' for item in items])}</ul>"
