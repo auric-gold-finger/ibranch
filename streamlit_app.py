@@ -8,8 +8,11 @@ st.set_page_config(layout="wide", page_title="Clinical Trials Visualizer")
 def generate_table_html(df):
     df = df.copy()
     df['Objective'] = df['Objective'].apply(lambda x: 
-        '<br>'.join([f"<span class='bullet'>•</span> {item.strip()}" for item in x.split(';')])
-    )
+    '<div class="bullet-container">' + 
+    '<br>'.join([f"<span class='bullet'>•</span><span class='bullet-text'>{item.strip()}</span>" 
+                 for item in x.split(';')]) +
+    '</div>'
+)
     
     html = f"""
     <div style="padding: 2rem;">
@@ -101,6 +104,18 @@ def generate_table_html(df):
                 text-align: center;
             }}
             
+            /* Add this new style */
+            td span.bullet + br + span.bullet {
+                margin-left: 0;  /* Reset margin for wrapped lines */
+            }
+
+            /* Add container for bullet points */
+            .bullet-container {
+                display: table-row;
+                text-indent: -20px;  /* Create hanging indent */
+                padding-left: 20px;  /* Offset the negative indent */
+            }
+
             td ul {{
                 margin: 0;
                 padding: 0;
