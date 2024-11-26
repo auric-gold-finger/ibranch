@@ -29,12 +29,12 @@ def save_settings_to_file(settings: dict, filename: str = "table_settings.json")
 def load_settings_from_file(filename: str = "table_settings.json") -> dict:
     """Load settings from JSON file, return defaults if file doesn't exist"""
     default_settings = {
-        'cell_spacing': 8,
-        'header_border_radius': 6,
-        'cell_border_radius': 6,
-        'header_font_size': 20,
-        'cell_font_size': 18,
-        'line_height': 1.5,
+        'cell_spacing': 4,
+        'header_border_radius': 2,
+        'cell_border_radius': 2,
+        'header_font_size': 22,
+        'cell_font_size': 17,
+        'line_height': 1.3,
         'default_header_align': 'center',
         'default_cell_align': 'left',
         'header_bgcolor': '#333333',
